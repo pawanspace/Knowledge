@@ -1,0 +1,7 @@
+Functional programming has its roots in lambda calculus, a formal system developed in the 1930s to investigate computability, the Entscheidungsproblem, function definition, function application, and recursion. Many functional programming languages can be viewed as elaborations on the lambda calculus.[1]
+
+
+Lambda calculus (also written as λ-calculus or called "the lambda calculus") is a formal system in mathematical logic and computer science for expressing computation by way of variable binding and substitution. First formulated by Alonzo Church, lambda calculus found early successes in the area of computability theory, such as a negative answer to Hilbert's Entscheidungsproblem.
+Because of the importance of the notion of variable binding and substitution, there is not just one system of lambda calculus, and in particular there are typed and untyped variants.
+
+JavaScript and LISP is built on these concepts. You can think of both as untyped variants as they both don't need a context of datatype in functions.

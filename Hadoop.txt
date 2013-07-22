@@ -1,0 +1,35 @@
+
+How large an amount of work? Orders of magnitude larger than many existing systems work with. Hundreds of gigabytes of data constitute the low end of Hadoop-scale. Actually Hadoop is built to process "web-scale" data on the order of hundreds of gigabytes to terabytes or petabytes. At this scale, it is likely that the input data set will not even fit on a single computer's hard drive, much less in memory. So Hadoop includes a distributed file system which breaks up input data and sends fractions of the original data to several machines in your cluster to hold. This results in the problem being processed in parallel using all of the machines in the cluster and computes output results as efficiently as possible.
+
+
+Performing large-scale computation is difficult. To work with this volume of data requires distributing parts of the problem to multiple machines to handle in parallel. Whenever multiple machines are used in cooperation with one another, the probability of failures rises. In a single-machine environment, failure is not something that program designers explicitly worry about very often: if the machine has crashed, then there is no way for the program to recover anyway.
+
+
+-------------------Important--------------------------
+
+In a distributed environment, however, partial failures are an expected and common occurrence. Networks can experience partial or total failure if switches and routers break down. Data may not arrive at a particular point in time due to unexpected network congestion. Individual compute nodes may overheat, crash, experience hard drive failures, or run out of memory or disk space. Data may be corrupted, or maliciously or improperly transmitted. Multiple implementations or versions of client software may speak slightly different protocols from one another. Clocks may become desynchronized, lock files may not be released, parties involved in distributed atomic transactions may lose their network connections part-way through, etc. In each of these cases, the rest of the distributed system should be able to recover from the component failure or transient error condition and continue to make progress. Of course, actually providing such resilience is a major software engineering challenge.
+
+----------------------------------------------------------------
+
+
+
+
+Hadoop provides no security model, nor safeguards against maliciously inserted data. For example, it cannot detect a man-in-the-middle attack between nodes. On the other hand, it is designed to handle hardware failure and data congestion issues very robustly. 
+
+
+
+
+
+Different distributed systems specifically address certain modes of failure, while worrying less about others. Hadoop provides no security model, nor safeguards against maliciously inserted data. For example, it cannot detect a man-in-the-middle attack between nodes. On the other hand, it is designed to handle hardware failure and data congestion issues very robustly. Other distributed systems make different trade-offs, as they intend to be used for problems with other requirements (e.g., high security).
+In addition to worrying about these sorts of bugs and challenges, there is also the fact that the compute hardware has finite resources available to it. The major resources include:
+Processor time
+Memory
+Hard drive space
+Network bandwidth
+Individual machines typically only have a few gigabytes of memory. If the input data set is several terabytes, then this would require a thousand or more machines to hold it in RAM -- and even then, no single machine would be able to process or address all of the data.\
+
+MOORE'S LAW
+-----------------------
+
+So why use a distributed system at all? They seem like more trouble than they're worth. And with the fast pace of computer hardware design, it seems inevitable that single-chip hardware will be able to "grow up" to handle the larger volumes of data. After all, Moore's Law (named after Gordon Moore, the founder of Intel) states that the number of transistors that can be placed in a processor will double approximately every two years, for half the cost. But trends in chip design are changing to face new realities. While we can still double the number of transistors per unit area at this pace, this does not necessarily result in faster single-threaded performance. New processors such as Intel Core 2 and Itanium 2 architectures now focus on embedding many smaller CPUs or "cores" onto the same physical device. This allows multiple threads to process twice as much data in parallel, but at the same speed at which they operated previously.
+Even if hundreds or thousands of CPU cores are placed on a single machine, it would not be possible to deliver input data to these cores fast enough for processing. Individual hard drives can only sustain read speeds between 60-100 MB/second. These speeds have been increasing over time, but not at the same breakneck pace as processors. Optimistically assuming the upper limit of 100 MB/second, and assuming four independent I/O channels are available to the machine, that provides 400 MB of data every second. A 4 terabyte data set would thus take over 10,000 seconds to read--about three hours just to load the data! With 100 separate machines each with two I/O channels on the job, this drops to three minutes.
